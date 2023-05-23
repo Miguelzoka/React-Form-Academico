@@ -1,7 +1,7 @@
 import Pagina from "@/components/Pagina";
 import Link from "next/link";
 import { useRouter } from "next/router";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Button, Form } from "react-bootstrap";
 import { useForm } from "react-hook-form";
 import { BsSave } from "react-icons/Bs"
@@ -9,8 +9,24 @@ import { AiOutlineRollback } from "react-icons/Ai"
 
 const form = () => {
 
-  const { push } = useRouter()
-  const { register, handleSubmit } = useForm()
+  const { push, query } = useRouter()
+  const { register, handleSubmit, setValue } = useForm()
+
+  useEffect(() => {
+
+    if(query.id){
+      const id = query.id
+      const cursos = JSON.parse(window.localStorage.getItem("cursos"))
+      const curso = cursos[id]
+
+      for(let atributo in curso){
+        setValue(atributo, curso[atributo])
+      }
+
+    }
+  }, [query.id]);
+
+  console.log(query.id)
 
   function salvar(dados){
     const cursos = JSON.parse(window.localStorage.getItem('cursos')) || []

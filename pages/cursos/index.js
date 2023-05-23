@@ -5,6 +5,7 @@ import { Table } from "react-bootstrap";
 import { AiFillPlusCircle } from "react-icons/ai";
 import { Fa } from "react-icons";
 import { FaRegTrashAlt } from "react-icons/Fa"
+import { BiEditAlt } from "react-icons/Bi"
 
 const index = () => {
   const [cursos, setCursos] = useState([]);
@@ -18,10 +19,12 @@ const index = () => {
   }
 
   function excluir(id){
+    if (confirm('Deseja realmente excluir o registro?')){
     const itens = getAll()
     itens.splice(id, 1)
     window.localStorage.setItem('cursos', JSON.stringify(itens))
     setCursos(itens)
+    }
   }
 
   return (
@@ -42,6 +45,10 @@ const index = () => {
           {cursos.map((item, i) => (
             <tr key={i}>
               <td>
+                <Link href={'/cursos/' + i}> 
+                <BiEditAlt title='Alterar' className="text-primary" />
+                </Link>
+                {' '}
                 <FaRegTrashAlt onClick={()=>excluir(i)} className="text-danger" />
               </td>
               <td>{item.nome}</td>
