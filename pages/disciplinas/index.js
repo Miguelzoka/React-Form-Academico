@@ -6,16 +6,30 @@ import { AiFillPlusCircle } from "react-icons/ai";
 import { Fa } from "react-icons";
 import { FaRegTrashAlt } from "react-icons/Fa"
 import { BiEditAlt } from "react-icons/Bi"
+import axios from "axios";
 
 const index = () => {
   const [disciplinas, setDisciplina] = useState([]);
 
   useEffect(() => {
-
+      axios.get('/api/disciplinas').then( resultado => {
+        setDisciplinas(resultado.data);
+      })
   }, []);
+
+  function getAll(){
+    axios.get('/api/disciplinas').then(resultado => {
+      setDisciplinas(resultado.data)
+    })
+  }
+
+  function excluir(id){
+    axios.delete('/api/disciplinas' + id)
+  }
 
   return (
     <Pagina titulo="Disciplinas">
+
       <Link href="/disciplinas/form" className="mb-2 btn btn-primary">
         <AiFillPlusCircle /> Novo
       </Link>
@@ -29,16 +43,16 @@ const index = () => {
           </tr>
         </thead>
         <tbody>
-          {disciplinas.map((item, i) => (
-            <tr key={i}>
+          {disciplinas.map(item => (
+            <tr key={item.id}>
               <td>
-                <Link href={'/disciplina/' + i}> 
+                <Link href={'/disciplina/' + item.id}> 
                 <BiEditAlt title='Alterar' className="text-primary" />
                 </Link>
                 {' '}
-                <FaRegTrashAlt onClick={()=>excluir(i)} className="text-danger" />
+                <FaRegTrashAlt onClick={()=>excluir(item.id)} className="text-danger" />
               </td>
-              <td>{item.nome}</td>
+              <td>{item.id}</td>
               <td>{item.duracao}</td>
               <td>{item.modalidade}</td>
             </tr>
