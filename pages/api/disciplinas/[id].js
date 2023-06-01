@@ -7,12 +7,8 @@ import { v4 } from "uuid";
 export default function handler(req, res) {
   const id = req.query.id
   if (req.method == 'GET') {
-    get(child(ref(db), 'disciplinas')).then(snapshot=>{
-      const retorno = []
-      snapshot.forEach(item=>{
-        retorno.push(item.val())
-      })
-      res.status(200).json(retorno)
+    get(child(ref(db), 'disciplinas' + id)).then(snapshot=>{
+      res.status(200).json(snapshot.val())
     })
   } else if (req.method == "PUT") {
     const uuid = v4();

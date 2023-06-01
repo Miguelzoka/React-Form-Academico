@@ -9,7 +9,7 @@ import { BiEditAlt } from "react-icons/Bi"
 import axios from "axios";
 
 const index = () => {
-  const [disciplinas, setDisciplina] = useState([]);
+  const [disciplinas, setDisciplinas] = useState([]);
 
   useEffect(() => {
       axios.get('/api/disciplinas').then( resultado => {
@@ -24,7 +24,10 @@ const index = () => {
   }
 
   function excluir(id){
-    axios.delete('/api/disciplinas' + id)
+    if (confirm('Deseja realmente excluir o registro?')){
+      axios.delete('/api/disciplinas' + id)
+      getAll()
+    }
   }
 
   return (

@@ -6,6 +6,7 @@ import { Button, Form } from "react-bootstrap";
 import { useForm } from "react-hook-form";
 import { BsSave } from "react-icons/Bs"
 import { AiOutlineRollback } from "react-icons/Ai"
+import axios from "axios";
 
 const form = () => {
 
@@ -13,49 +14,37 @@ const form = () => {
   const { register, handleSubmit, setValue } = useForm()
 
   useEffect(() => {
-
     if(query.id){
-      const id = query.id
-      const cursos = JSON.parse(window.localStorage.getItem("cursos"))
-      const curso = cursos[id]
-
-      for(let atributo in curso){
-        setValue(atributo, curso[atributo])
-      }
-
+      axios.get('/api/disciplinas' + query.id).then(resultado => {
+        const disciplinas = resultado.data
+        
+        for(let atributo in disciplina){
+          setValue('nome', disciplina.nome[atributo])
+        }
+      })
     }
   }, [query.id]);
 
-  console.log(query.id)
-
   function salvar(dados){
-    const cursos = JSON.parse(window.localStorage.getItem('cursos')) || []
-    cursos.splice(query.id, 1, dados)
-    window.localStorage.setItem('cursos', JSON.stringify(cursos))
-    push('/cursos')
+
   }
 
   return (
-    <Pagina titulo="Formulário">
+    <Pagina titulo="Disciplinas">
         <Form>
       <Form.Group className="mb-3" controlId="nome">
         <Form.Label>Nome:</Form.Label>
         <Form.Control type="text" {...register('nome')}/>
       </Form.Group>
-      <Form.Group className="mb-3" controlId="duracao">
-        <Form.Label>Duração:</Form.Label>
-        <Form.Control type="text" {...register('duracao')} />
+      <Form.Group className="mb-3" controlId="curso">
+        <Form.Label>Curso:</Form.Label>
+        <Form.Control type="text" {...register('curso')} />
       </Form.Group>
-      <Form.Group className="mb-3" controlId="modalidade">
-        <Form.Label>Modalidade:</Form.Label>
-        <Form.Control type="text" {...register('modalidade')} />
-      </Form.Group>
-
       <Button variant="primary" onClick={handleSubmit(salvar)}>
         <BsSave className="me-2"/>
         Salvar
       </Button>
-      <Link className="ms-2 btn btn-danger" href={'/cursos'}>
+      <Link className="ms-2 btn btn-danger" href={'/disciplinas'}>
         <AiOutlineRollback className="me-2"/>
         Voltar
       </Link>
