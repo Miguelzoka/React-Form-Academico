@@ -10,31 +10,31 @@ import axios from 'axios'
 
 const index = () => {
 
-  const [cursos, setCursos] = useState([])
+  const [professores, setProfessores] = useState([])
 
   useEffect(() => {
-    axios.get('/api/cursos').then(resultado => {
-      setCursos(resultado.data);
+    axios.get('/api/professores').then(resultado => {
+      setProfessores(resultado.data);
     })
   }, [])
 
   function getAll() {
-    axios.get('/api/cursos').then(resultado => {
-      setCursos(resultado.data);
+    axios.get('/api/professores').then(resultado => {
+      setProfessores(resultado.data);
     })
   }
 
   function excluir(id) {
     if (confirm('Deseja realmente excluir o registro?')) {
-      axios.delete('/api/cursos/' + id)
+      axios.delete('/api/professores/' + id)
       getAll()
     }
   }
 
 
   return (
-    <Pagina titulo='Cursos'>
-      <Button href='/cursos/form' className='mb-2' variant="primary">Novo
+    <Pagina titulo='Professores'>
+      <Button href='/professores/form' className='mb-2' variant="primary">Novo
         <AiOutlinePlus />
       </Button>
       <Table striped bordered hover>
@@ -42,23 +42,39 @@ const index = () => {
           <tr>
             <th>Opções</th>
             <th>Nome</th>
-            <th>Duração</th>
-            <th>Modalidade</th>
+            <th>CPF</th>
+            <th>Matrícula</th>
+            <th>Salário</th>
+            <th>Email</th>
+            <th>Telefone</th>
+            <th>CEP</th>
+            <th>Logradouro</th>
+            <th>Complemento</th>
+            <th>Número</th>
+            <th>Bairro</th>
           </tr>
         </thead>
         <tbody>
-          {cursos.map(item => (
+          {professores.map(item => (
             <tr key={item.id}>
               <td>
-                <Link href={'/cursos/' + item.id}>
+                <Link href={'/professores/' + item.id}>
                   <BiEditAlt className='me-3' style={{ cursor: 'pointer' }} />
                 </Link>
                 <BsTrash3Fill style={{ cursor: 'pointer' }}
                   onClick={() => excluir(item.id)} className='text-danger' />
               </td>
               <td>{item.nome}</td>
-              <td>{item.duracao}</td>
-              <td>{item.modalidade}</td>
+              <td>{item.cpf}</td>
+              <td>{item.matricula}</td>
+              <td>{item.salario}</td>
+              <td>{item.email}</td>
+              <td>{item.telefone}</td>
+              <td>{item.cep}</td>
+              <td>{item.logradouro}</td>
+              <td>{item.complemento}</td>
+              <td>{item.numero}</td>
+              <td>{item.bairro}</td>
             </tr>
           ))}
         </tbody>

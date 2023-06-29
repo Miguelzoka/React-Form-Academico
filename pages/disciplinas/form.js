@@ -1,52 +1,74 @@
-import Pagina from "@/components/Pagina";
-import Link from "next/link";
-import { useRouter } from "next/router";
-import React from "react";
-import { Button, Form } from "react-bootstrap";
-import { useForm } from "react-hook-form";
-import { BsSave } from "react-icons/Bs"
-import { AiOutlineRollback } from "react-icons/Ai"
+import Pagina from '@/components/Pagina'
 import axios from 'axios'
+import Link from 'next/link'
+import { useRouter } from 'next/router'
+import React from 'react'
+import { Button, Form } from 'react-bootstrap'
+import { useForm } from 'react-hook-form'
+import { HiCheck } from 'react-icons/hi'
+import { HiArrowNarrowLeft } from 'react-icons/hi'
+import disciplinaValidator from '@/validators/disciplinaValidator'
 
 const form = () => {
 
-  const { push } = useRouter()
-  const { register, handleSubmit } = useForm()
-
-  const form = () => {
+    const { register, handleSubmit, formState: { errors } } = useForm()
     const { push } = useRouter()
-    const {register, handleSubmit} = useForm()
-  }
-  
-  function salvar(dados){
-      axios.post('/api/disciplinas', dados)
-      push('/disciplinas')
-  }
 
-  return (
-    <Pagina titulo="Disciplina">
-        <Form>
-      <Form.Group className="mb-3" controlId="nome">
-        <Form.Label>Nome:</Form.Label>
-        <Form.Control type="text" {...register('nome')}/>
-      </Form.Group>
-      <Form.Group className="mb-3" controlId="duracao">
-        <Form.Label>Curso:</Form.Label>
-        <Form.Control type="text" {...register('duracao')} />
-      </Form.Group>
+    function salvar(dados) {
 
-      <Button variant="primary" onClick={handleSubmit(salvar)}>
-        <BsSave className="me-2"/>
-        Salvar
-      </Button>
-      <Link className="ms-2 btn btn-danger" href={'/cursos'}>
-        <AiOutlineRollback className="me-2"/>
-        Voltar
-      </Link>
+        axios.post('/api/disciplinas', dados)
+        push('/disciplinas')
 
-    </Form>
-    </Pagina>
-  );
-};
+    }
 
-export default form;
+    return (
+        <Pagina titulo='Disciplinas'>
+            <Form>
+                <Form.Group className="mb-3" controlId='nome'>
+                    <Form.Label >Nome: </Form.Label>
+                    <Form.Control 
+                    isInvalid={errors.nome} 
+                    isValid={!errors.nome} 
+                    type="text"
+                     {...register('nome', disciplinaValidator.nome)} />
+                    {
+                        errors.nome &&
+                        <p className='text-danger'>{errors.nome.message}</p>
+                    }
+                </Form.Group>
+
+                <Form.Group className="mb-3" controlId='curso'>
+                    <Form.Label >Curso: </Form.Label>
+                    <Form.Control
+                    isInvalid={errors.curso} 
+                    isValid={!errors.curso} 
+                    type="text" 
+                    {...register('curso', disciplinaValidator.curso)} />
+                    {
+                        errors.curso &&
+                        <p className='text-danger'>{errors.curso.message}</p>
+                    }
+                </Form.Group>
+
+                <div className='text-center'>
+                    <Link href='/disciplinas/' className='me-3'>
+                        <Button variant="success" onClick={handleSubmit(salvar)}>
+                            <HiCheck />
+                            Salvar
+                        </Button>
+                    </Link>
+                    <Link href='/disciplinas/'>
+                        <Button variant='danger'>
+                            <HiArrowNarrowLeft />
+                            Voltar
+                        </Button>
+                    </Link>
+                </div>
+
+            </Form>
+        </Pagina>
+
+    )
+}
+
+export default form

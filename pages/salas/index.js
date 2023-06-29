@@ -10,31 +10,31 @@ import axios from 'axios'
 
 const index = () => {
 
-  const [cursos, setCursos] = useState([])
+  const [salas, setSalas] = useState([])
 
   useEffect(() => {
-    axios.get('/api/cursos').then(resultado => {
-      setCursos(resultado.data);
+    axios.get('/api/salas').then(resultado => {
+      setSalas(resultado.data);
     })
   }, [])
 
   function getAll() {
-    axios.get('/api/cursos').then(resultado => {
-      setCursos(resultado.data);
+    axios.get('/api/salas').then(resultado => {
+      setSalas(resultado.data);
     })
   }
 
   function excluir(id) {
     if (confirm('Deseja realmente excluir o registro?')) {
-      axios.delete('/api/cursos/' + id)
+      axios.delete('/api/salas/' + id)
       getAll()
     }
   }
 
 
   return (
-    <Pagina titulo='Cursos'>
-      <Button href='/cursos/form' className='mb-2' variant="primary">Novo
+    <Pagina titulo='Salas'>
+      <Button href='/salas/form' className='mb-2' variant="primary">Novo
         <AiOutlinePlus />
       </Button>
       <Table striped bordered hover>
@@ -42,23 +42,23 @@ const index = () => {
           <tr>
             <th>Opções</th>
             <th>Nome</th>
-            <th>Duração</th>
-            <th>Modalidade</th>
+            <th>Capacidade</th>
+            <th>Tipo</th>
           </tr>
         </thead>
         <tbody>
-          {cursos.map(item => (
+          {salas.map(item => (
             <tr key={item.id}>
               <td>
-                <Link href={'/cursos/' + item.id}>
+                <Link href={'/salas/' + item.id}>
                   <BiEditAlt className='me-3' style={{ cursor: 'pointer' }} />
                 </Link>
                 <BsTrash3Fill style={{ cursor: 'pointer' }}
                   onClick={() => excluir(item.id)} className='text-danger' />
               </td>
               <td>{item.nome}</td>
-              <td>{item.duracao}</td>
-              <td>{item.modalidade}</td>
+              <td>{item.capacidade}</td>
+              <td>{item.tipo}</td>
             </tr>
           ))}
         </tbody>

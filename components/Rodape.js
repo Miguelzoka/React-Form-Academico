@@ -1,10 +1,9 @@
 import React from 'react'
-
-
+import 'bootstrap/dist/css/bootstrap.min.css';
 
 const Rodape = () => {
   return (
-    <div style={{width: '100%'}} className='bg-secondary text-white py-1 text-center position-fixed bottom-0'>
+    <div style={{width: '100%'}} className='bg-dark text-white text-center position-fixed bottom-0'>
       <p>Rodapé</p>
     </div>
   )

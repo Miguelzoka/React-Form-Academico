@@ -10,31 +10,31 @@ import axios from 'axios'
 
 const index = () => {
 
-  const [cursos, setCursos] = useState([])
+  const [semestres, setSemestres] = useState([])
 
   useEffect(() => {
-    axios.get('/api/cursos').then(resultado => {
-      setCursos(resultado.data);
+    axios.get('/api/semestres').then(resultado => {
+      setSemestres(resultado.data);
     })
   }, [])
 
   function getAll() {
-    axios.get('/api/cursos').then(resultado => {
-      setCursos(resultado.data);
+    axios.get('/api/semestres').then(resultado => {
+      setSemestres(resultado.data);
     })
   }
 
   function excluir(id) {
     if (confirm('Deseja realmente excluir o registro?')) {
-      axios.delete('/api/cursos/' + id)
+      axios.delete('/api/semestres/' + id)
       getAll()
     }
   }
 
 
   return (
-    <Pagina titulo='Cursos'>
-      <Button href='/cursos/form' className='mb-2' variant="primary">Novo
+    <Pagina titulo='Semestres'>
+      <Button href='/semestres/form' className='mb-2' variant="primary">Novo
         <AiOutlinePlus />
       </Button>
       <Table striped bordered hover>
@@ -42,23 +42,23 @@ const index = () => {
           <tr>
             <th>Opções</th>
             <th>Nome</th>
-            <th>Duração</th>
-            <th>Modalidade</th>
+            <th>Inicio</th>
+            <th>Fim</th>
           </tr>
         </thead>
         <tbody>
-          {cursos.map(item => (
+          {semestres.map(item => (
             <tr key={item.id}>
               <td>
-                <Link href={'/cursos/' + item.id}>
+                <Link href={'/semestres/' + item.id}>
                   <BiEditAlt className='me-3' style={{ cursor: 'pointer' }} />
                 </Link>
                 <BsTrash3Fill style={{ cursor: 'pointer' }}
                   onClick={() => excluir(item.id)} className='text-danger' />
               </td>
               <td>{item.nome}</td>
-              <td>{item.duracao}</td>
-              <td>{item.modalidade}</td>
+              <td>{item.inicio}</td>
+              <td>{item.fim}</td>
             </tr>
           ))}
         </tbody>
